@@ -35,7 +35,7 @@ import gate.creole.annic.apache.lucene.store.InputStream;
 
 public class TextUnderstandingProject {
 	public final static int EntailmentsThreshold = 2;
-	public final static double EntailmentConfidenceThreshold = -0.2;
+	public final static double EntailmentConfidenceThreshold = -0.15;
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args){
 		try {
@@ -66,7 +66,7 @@ public class TextUnderstandingProject {
 		        for(String tag : tags){
 		            JSONArray arr = possibleTagsJson.getJSONArray(tag);
 		            //double confidenceSum = 0;
-					int entailments = 0;
+		            int entailments = 0;
 		            for(int exampleNumber=0;exampleNumber < arr.length();exampleNumber++){
 		            	String h = (String) arr.get(exampleNumber);
 		            	JCas jcas = lap.generateSingleTHPairCAS(t,h);
@@ -78,15 +78,16 @@ public class TextUnderstandingProject {
 			            		break; // no need to see any more examples of this tag
 		            		}
 		            	}
-					}
+		            }
+		        }
 		    			/*if (decision.getDecision() == DecisionLabel.Entailment)
 		    				confidenceSum += decision.getConfidence();
 		    			else if (decision.getDecision() == DecisionLabel.NonEntailment)
 		    				confidenceSum -= decision.getConfidence();
 		            }
 		            if (confidenceSum > EntailmentConfidenceThreshold * (double)arr.length())
-		            	curTags.put(tag);*/
-		        }
+		            	curTags.put(tag);
+		        }*/
 		        
 		        curEntry.put("tags", curTags);
 			}
