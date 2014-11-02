@@ -65,7 +65,8 @@ public class TextUnderstandingProject {
 				
 		        for(String tag : tags){
 		            JSONArray arr = possibleTagsJson.getJSONArray(tag);
-		            double confidenceSum = 0;
+		            //double confidenceSum = 0;
+					int entailments = 0;
 		            for(int exampleNumber=0;exampleNumber < arr.length();exampleNumber++){
 		            	String h = (String) arr.get(exampleNumber);
 		            	JCas jcas = lap.generateSingleTHPairCAS(t,h);
