@@ -34,8 +34,9 @@ import eu.excitementproject.eop.lap.biu.uima.BIUFullLAP;
 import gate.creole.annic.apache.lucene.store.InputStream;
 
 public class TextUnderstandingProject {
-	public final static int EntailmentsThreshold = 2;
-	public final static double EntailmentConfidenceThreshold = -0.15;
+	public final static int EntailmentsThreshold = 5;	// first form	
+	public final static double EntailmentPortion = 0.15;	// second form
+	public final static double EntailmentConfidenceThreshold = -0.3; // third form
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args){
 		try {
@@ -65,28 +66,29 @@ public class TextUnderstandingProject {
 				
 		        for(String tag : tags){
 		            JSONArray arr = possibleTagsJson.getJSONArray(tag);
-		            //double confidenceSum = 0;
-		            int entailments = 0;
+		            int entailments = 0;	// first & second form
+		            //double confidenceSum = 0.0;	// third form
 		            for(int exampleNumber=0;exampleNumber < arr.length();exampleNumber++){
 		            	String h = (String) arr.get(exampleNumber);
 		            	JCas jcas = lap.generateSingleTHPairCAS(t,h);
 		    			TEDecision decision = biutee.process(jcas);
-		            	if (decision.getDecision() == DecisionLabel.Entailment){
-		            		entailments++;
-		            		if (entailments == EntailmentsThreshold) {
-			            		curTags.put(tag);
-			            		break; // no need to see any more examples of this tag
+		            	if (decision.getDecision() == DecisionLabel.Entailment){	// first & second form
+		            		entailments++;											// first & second form
+		            		//if (entailments == EntailmentsThreshold) {	// first form
+		            		if (entailments / (double)arr.length() > EntailmentPortion) {	// second form
+			            		curTags.put(tag);											// first & second form
+			            		break; // no need to see any more examples of this tag		// first & second form
 		            		}
 		            	}
 		            }
 		        }
-		    			/*if (decision.getDecision() == DecisionLabel.Entailment)
-		    				confidenceSum += decision.getConfidence();
-		    			else if (decision.getDecision() == DecisionLabel.NonEntailment)
-		    				confidenceSum -= decision.getConfidence();
+/*		    			if (decision.getDecision() == DecisionLabel.Entailment)				// third form
+		    				confidenceSum += decision.getConfidence();						// third form
+		    			else if (decision.getDecision() == DecisionLabel.NonEntailment)		// third form
+		    				confidenceSum -= decision.getConfidence();						// third form
 		            }
-		            if (confidenceSum > EntailmentConfidenceThreshold * (double)arr.length())
-		            	curTags.put(tag);
+		            if (confidenceSum > EntailmentConfidenceThreshold * (double)arr.length())	// third form
+		            	curTags.put(tag);														// third form
 		        }*/
 		        
 		        curEntry.put("tags", curTags);
